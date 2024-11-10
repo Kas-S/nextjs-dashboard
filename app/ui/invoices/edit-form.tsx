@@ -10,6 +10,7 @@ import {
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 import { updateInvoice } from '@/app/lib/actions';
+import { useActionState } from 'react';
 
 interface EditInvoiceFormProps {
   invoice: InvoiceForm;
@@ -18,9 +19,11 @@ interface EditInvoiceFormProps {
 
 export default function EditInvoiceForm(props: EditInvoiceFormProps) {
   const { invoice, customers } = props;
+  const initialState = { errors: {} };
   const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
+  const [state, formAction] = useActionState(updateInvoiceWithId, initialState);
   return (
-    <form action={updateInvoiceWithId}>
+    <form action={formAction}>
       <div className='rounded-md bg-gray-50 p-4 md:p-6'>
         <div className='mb-4'>
           <label htmlFor='customer' className='mb-2 block text-sm font-medium'>
